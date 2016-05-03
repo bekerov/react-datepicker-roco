@@ -180,7 +180,7 @@ var DatePicker = React.createClass({
 
   renderClearButton () {
     if (this.props.isClearable && this.props.selected != null) {
-      return <a className="react-datepicker__close-icon" href="#" onClick={this.onClearClick}></a>
+      return <a className="close-icon" href="#" onClick={this.onClearClick}></a>
     } else {
       return null
     }

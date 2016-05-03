@@ -54,13 +54,13 @@ var Day = React.createClass({
   },
 
   getClassNames () {
-    return classnames('react-datepicker__day', {
-      'react-datepicker__day--disabled': this.isDisabled(),
-      'react-datepicker__day--selected': this.isSameDay(this.props.selected),
-      'react-datepicker__day--in-range': this.isInRange(),
-      'react-datepicker__day--today': this.isSameDay(moment()),
-      'react-datepicker__day--weekend': this.isWeekend(),
-      'react-datepicker__day--outside-month': this.isOutsideMonth()
+    return classnames('day', {
+      'day--disabled': this.isDisabled(),
+      'day--selected': this.isSameDay(this.props.selected),
+      'day--in-range': this.isInRange(),
+      'day--today': this.isSameDay(moment()),
+      'day--weekend': this.isWeekend(),
+      'day--outside-month': this.isOutsideMonth()
     })
   },
 

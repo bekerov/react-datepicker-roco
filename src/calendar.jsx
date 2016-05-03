@@ -2,6 +2,8 @@ import moment from 'moment'
 import YearDropdown from './year_dropdown'
 import Month from './month'
 import React from 'react'
+import Months from './views/Months'
+import Years from './views/Years'
 import { isSameDay, allDaysDisabledBefore, allDaysDisabledAfter, getEffectiveMinDate, getEffectiveMaxDate } from './date_utils'
 
 var Calendar = React.createClass({
@@ -28,7 +30,9 @@ var Calendar = React.createClass({
 
   getInitialState () {
     return {
-      date: this.localizeMoment(this.getDateInView())
+      date: this.localizeMoment(this.getDateInView()),
+      // Текущее view (есть days, months, years)
+      currentView: 'days'
     }
   },
 
@@ -76,6 +80,17 @@ var Calendar = React.createClass({
     })
   },
 
+  /**
+   * Изменение месяца.
+   * @param month
+   */
+  changeMonth (month) {
+    this.setState({
+      date: this.state.date.clone().set('month', month),
+      currentView: 'days'
+    })
+  },
+
   handleDayClick (day) {
     this.props.onSelect(day)
   },
@@ -91,7 +106,7 @@ var Calendar = React.createClass({
     return [0, 1, 2, 3, 4, 5, 6].map(offset => {
       const day = startOfWeek.clone().add(offset, 'days')
       return (
-        <div key={offset} className="react-datepicker__day-name">
+        <div key={offset} className="day-name">
           {day.localeData().weekdaysMin(day)}
         </div>
       )
@@ -103,7 +118,7 @@ var Calendar = React.createClass({
       return
     }
     return <a
-        className='react-datepicker__navigation react-datepicker__navigation--previous'
+        className='navigation navigation--previous'
         onClick={this.decreaseMonth} />
   },
 
@@ -112,17 +127,37 @@ var Calendar = React.createClass({
       return
     }
     return <a
-        className='react-datepicker__navigation react-datepicker__navigation--next'
+        className='navigation navigation--next'
         onClick={this.increaseMonth} />
   },
 
+  /**
+   * Хендлер клика по заголовку.
+   */
+  handleClickHeader () {
+    this.setState({currentView: 'months'})
+  },
+
+  /**
+   * Открытие нужной вьюхи
+   * @param view
+   */
+  handleChangeView (view) {
+    console.log('handleChangeView')
+    this.setState({currentView: view})
+  },
+
+  /**
+   * Вывод заголовка календаря.
+   * @returns {XML}
+     */
   renderCurrentMonth () {
     var classes = ['react-datepicker__current-month']
     if (this.props.showYearDropdown) {
       classes.push('react-datepicker__current-month--hasYearDropdown')
     }
     return (
-      <div className={classes.join(' ')}>
+      <div className={classes.join(' ')} onClick={this.handleClickHeader} >
         {this.state.date.format(this.props.dateFormat)}
       </div>
     )
@@ -151,19 +186,23 @@ var Calendar = React.createClass({
   },
 
   render () {
-    return (
-      <div className="react-datepicker">
-        <div className="react-datepicker__triangle"></div>
-        <div className="react-datepicker__header">
-          {this.renderPreviousMonthButton()}
-          {this.renderCurrentMonth()}
-          {this.renderYearDropdown()}
-          {this.renderNextMonthButton()}
+    let {date, currentView} = this.state
+    let content;
+
+    switch (currentView) {
+      case ('days'):
+        content = <div>
+          <div className="header">
+            {this.renderPreviousMonthButton()}
+            {this.renderCurrentMonth()}
+            {this.renderYearDropdown()}
+            {this.renderNextMonthButton()}
+          </div>
+
           <div>
             {this.header()}
           </div>
-        </div>
-        <Month
+          <Month
             day={this.state.date}
             onDayClick={this.handleDayClick}
             minDate={this.props.minDate}
@@ -174,7 +213,19 @@ var Calendar = React.createClass({
             selected={this.props.selected}
             startDate={this.props.startDate}
             endDate={this.props.endDate} />
-        {this.renderTodayButton()}
+        </div>
+        break
+      case ('months'):
+        content = <Months onChangeView={this.handleChangeView} onChangeYear={this.changeYear} onChangeMonth={this.changeMonth} date={date} />
+        break
+      case ('years'):
+        content = <Years onChangeView={this.handleChangeView} date={date} onChangeYear={this.changeYear} />
+        break
+    }
+    return (
+      <div className="react-datepicker">
+        <div className="triangle"></div>
+        {content}
       </div>
     )
   }
