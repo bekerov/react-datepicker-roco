@@ -50744,7 +50744,6 @@
 	   * @param view
 	   */
 	  handleChangeView: function handleChangeView(view) {
-	    console.log('handleChangeView');
 	    this.setState({ currentView: view });
 	  },
 
@@ -50790,6 +50789,7 @@
 	    var _state = this.state;
 	    var date = _state.date;
 	    var currentView = _state.currentView;
+	    var locale = this.props.locale;
 
 	    var content = void 0;
 
@@ -50825,7 +50825,7 @@
 	        );
 	        break;
 	      case 'months':
-	        content = _react2.default.createElement(_Months2.default, { onChangeView: this.handleChangeView, onChangeYear: this.changeYear, onChangeMonth: this.changeMonth, date: date });
+	        content = _react2.default.createElement(_Months2.default, { locale: locale, onChangeView: this.handleChangeView, onChangeYear: this.changeYear, onChangeMonth: this.changeMonth, date: date });
 	        break;
 	      case 'years':
 	        content = _react2.default.createElement(_Years2.default, { onChangeView: this.handleChangeView, date: date, onChangeYear: this.changeYear });
@@ -51502,8 +51502,11 @@
 	  render: function render() {
 	    var _this = this;
 
-	    var date = this.props.date;
+	    var _props = this.props;
+	    var date = _props.date;
+	    var locale = _props.locale;
 
+	    _moment2.default.locale(locale);
 	    var year = date.year();
 	    var currentMonth = date.month();
 	    var months = _moment2.default.monthsShort().map(function (month, i) {
@@ -54990,6 +54993,7 @@
 	  },
 	  render: function render() {
 	    return _react2.default.createElement(_reactDatepicker2.default, {
+	      locale: 'de',
 	      selected: this.state.startDate,
 	      onChange: this.handleChange });
 	  }

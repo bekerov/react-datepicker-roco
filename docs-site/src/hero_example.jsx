@@ -19,7 +19,7 @@ export default React.createClass({
 
   render () {
     return <DatePicker
-      locale="ru"
+      locale="de"
         selected={this.state.startDate}
         onChange={this.handleChange} />
   }

@@ -40,7 +40,8 @@ var Months = React.createClass({
   },
 
   render () {
-    const {date} = this.props
+    const {date, locale} = this.props
+    moment.locale(locale)
     let year = date.year()
     let currentMonth = date.month()
     let months = moment.monthsShort().map((month, i) => {

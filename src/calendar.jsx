@@ -145,7 +145,6 @@ var Calendar = React.createClass({
    * @param view
    */
   handleChangeView (view) {
-    console.log('handleChangeView')
     this.setState({currentView: view})
   },
 
@@ -189,6 +188,7 @@ var Calendar = React.createClass({
 
   render () {
     let {date, currentView} = this.state
+    let {locale} = this.props
     let content;
 
     switch (currentView) {
@@ -218,7 +218,7 @@ var Calendar = React.createClass({
         </div>
         break
       case ('months'):
-        content = <Months onChangeView={this.handleChangeView} onChangeYear={this.changeYear} onChangeMonth={this.changeMonth} date={date} />
+        content = <Months locale={locale} onChangeView={this.handleChangeView} onChangeYear={this.changeYear} onChangeMonth={this.changeMonth} date={date} />
         break
       case ('years'):
         content = <Years onChangeView={this.handleChangeView} date={date} onChangeYear={this.changeYear} />
