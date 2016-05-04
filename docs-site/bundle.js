@@ -50668,7 +50668,9 @@
 	    }
 	  },
 	  localizeMoment: function localizeMoment(date) {
-	    return date.clone().locale(this.props.locale || _moment2.default.locale());
+	    var locale = this.props.locale || _moment2.default.locale();
+	    _moment2.default.locale(locale);
+	    return date.clone().locale(locale);
 	  },
 	  increaseMonth: function increaseMonth() {
 	    this.setState({
