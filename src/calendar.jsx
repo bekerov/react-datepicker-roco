@@ -65,7 +65,9 @@ var Calendar = React.createClass({
   },
 
   localizeMoment (date) {
-    return date.clone().locale(this.props.locale || moment.locale())
+    var locale = this.props.locale || moment.locale()
+    moment.locale(locale)
+    return date.clone().locale(locale)
   },
 
   increaseMonth () {
